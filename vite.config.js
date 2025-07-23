@@ -1,15 +1,22 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { fileURLToPath, URL } from "node:url";
+import path from "node:path";
+import { resolve } from 'node:path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [  vue()],
-  base:"./",
+  plugins: [vue()],
+
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+      },
+    },
+  },
+  base: process.env.NODE_ENV === "production" ? "/szh-banzu/" : "/",
   resolve: {
     alias: {
-      //别名，给./src目录，起个别名@，在文件中就可以使用@替换src了
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@": path.resolve(__dirname, "src"),
     },
   },
   define: {
